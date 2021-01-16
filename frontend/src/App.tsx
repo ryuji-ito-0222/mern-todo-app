@@ -1,12 +1,14 @@
 import React from 'react';
+import { Heading, Stack, Text } from '@chakra-ui/react';
 import './styles/App.css';
 
-const App: React.FC = () => {
-  return (
-    <div className="app">
-      <h1>これはテストです</h1>
-    </div>
-  );
-};
+const App: React.FC = () => (
+  <Stack>
+    <Heading as="h2" size="xl">
+      これはテストです
+    </Heading>
+    <Text fontSize="xl">これはテストです</Text>
+  </Stack>
+);
 
 export default App;
