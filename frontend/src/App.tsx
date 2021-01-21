@@ -1,9 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Flex, Heading, Input, ListItem, OrderedList, Stack } from '@chakra-ui/react';
 import Todo from './Todo';
+import axios from './axios';
+
+type Todo = {
+  id: string;
+  todo: string;
+};
 
 const App: React.FC = () => {
-  const [input, setInput] = useState('aaa');
+  const [input, setInput] = useState('');
+  const [todoList, setTodoList] = useState<Todo[]>([]);
+
+  console.log(todoList);
+
+  const getTodos = (): void => {
+    axios.get('/get/todoList').then((res) => setTodoList(res.data));
+  };
+
+  const addTodo = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    axios
+      .post('/new/todo', {
+        todo: input,
+        timestamp: Date.now(),
+      })
+      .then(() => setInput(''));
+  };
+
+  useEffect(() => {
+    getTodos();
+  }, []);
 
   return (
     <Stack display="grid" placeItems="center" height="100vh">
@@ -12,6 +39,8 @@ const App: React.FC = () => {
         borderColor="blue.300"
         height="700px"
         width="60%"
+        minWidth="500px"
+        maxWidth="700px"
         borderRadius={10}
         p={2}
       >
@@ -38,18 +67,17 @@ const App: React.FC = () => {
             background="blue.400"
             borderRadius={0}
             border="none"
-            onClick={(e) => {
-              e.preventDefault();
-              setInput('');
-            }}
+            onClick={addTodo}
           >
             Add
           </Button>
         </Flex>
         <OrderedList>
-          <ListItem>
-            <Todo />
-          </ListItem>
+          {todoList.map(({ id, todo }) => (
+            <ListItem key={id}>
+              <Todo id={id} todo={todo} />
+            </ListItem>
+          ))}
         </OrderedList>
       </Box>
     </Stack>

@@ -28,6 +28,6 @@
     "node_modules",
     "build",
     "scripts",
-    "functions"
+    "functions",
   ]
 }

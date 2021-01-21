@@ -5,4 +5,4 @@ public/
 **/*.min.js
 *.config.js
 /.eslintrc.js
-*.ts
+reportWebvitals.ts
