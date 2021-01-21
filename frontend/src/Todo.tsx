@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { DeleteIcon } from '@chakra-ui/icons';
 import { Flex, IconButton, Text } from '@chakra-ui/react';
 import React from 'react';
@@ -12,7 +11,8 @@ interface TodoProps {
 
 const Todo: React.FC<TodoProps> = ({ id, todo }) => {
   const deleteTodo = () => {
-    axios.delete(`/delete/todo?id=${id}`);
+    const answer = confirm('削除しますか？');
+    if (answer) axios.delete(`/delete/todo?id=${id}`);
   };
 
   return (

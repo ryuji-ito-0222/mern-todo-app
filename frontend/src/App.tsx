@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Box, Button, Flex, Heading, Input, ListItem, OrderedList, Stack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import axios from './axios';
+import { pusher } from './pusher';
 import Todo from './Todo';
 
-type Todo = {
+export type Todo = {
   id: string;
   todo: string;
 };
@@ -15,9 +14,7 @@ const App: React.FC = () => {
   const [input, setInput] = useState('');
   const [todoList, setTodoList] = useState<Todo[]>([]);
 
-  console.log(todoList);
-
-  const getTodos = (): void => {
+  const getTodos = () => {
     axios
       .get('/get/todoList')
       .then((res: { data: React.SetStateAction<Todo[]> }) => setTodoList(res.data));
@@ -35,6 +32,11 @@ const App: React.FC = () => {
 
   useEffect(() => {
     getTodos();
+
+    const todo = pusher.subscribe('todos');
+    todo.bind('newTodo', () => {
+      getTodos();
+    });
   }, []);
 
   return (
