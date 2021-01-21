@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Box, Button, Flex, Heading, Input, ListItem, OrderedList, Stack } from '@chakra-ui/react';
-import Todo from './Todo';
+import React, { useEffect, useState } from 'react';
+
 import axios from './axios';
+import Todo from './Todo';
 
 type Todo = {
   id: string;
@@ -15,7 +18,9 @@ const App: React.FC = () => {
   console.log(todoList);
 
   const getTodos = (): void => {
-    axios.get('/get/todoList').then((res) => setTodoList(res.data));
+    axios
+      .get('/get/todoList')
+      .then((res: { data: React.SetStateAction<Todo[]> }) => setTodoList(res.data));
   };
 
   const addTodo = (e: React.SyntheticEvent) => {

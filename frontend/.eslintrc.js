@@ -52,6 +52,7 @@ module.exports = {
     'prefer-arrow',
     'react',
     'react-hooks',
+    'simple-import-sort',
   ],
   rules: {
     // eslint official
@@ -60,6 +61,8 @@ module.exports = {
     'newline-before-return': 'error',
     'no-console': 'warn',
     'no-continue': 'off',
+    'simple-import-sort/imports': 'error',
+    'sort-imports': ['error', { ignoreDeclarationSort: true }],
     quotes: ['error', 'single', { avoidEscape: true }],
     'require-yield': 'error',
     semi: ['error', 'always'],
@@ -73,7 +76,6 @@ module.exports = {
     ],
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
-    // for react-app-env.d.ts (https://github.com/facebook/create-react-app/issues/6560)
     'spaced-comment': [
       'error',
       'always',
