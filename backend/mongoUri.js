@@ -1,1 +1,1 @@
-export const mongoURI ="your mongoDDB URI"
+export const mongoURI ="your mongoDB URI"
