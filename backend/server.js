@@ -10,11 +10,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 const pusher = new Pusher({
-  appId: '1142569',
-  key: 'cb5535c4ef031ce346ed',
-  secret: '38689107c54c53651d31',
-  cluster: 'ap3',
-  useTLS: true,
+"your pusher config"
 });
 
 //  middleware
