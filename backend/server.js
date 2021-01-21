@@ -2,18 +2,26 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import todoData from './todoData.js';
+import Pusher from 'pusher';
+import { mongoURI } from './mongoUri.js';
 
 // app config
 const app = express();
 const port = process.env.PORT || 8080;
+
+const pusher = new Pusher({
+  appId: '1142569',
+  key: 'cb5535c4ef031ce346ed',
+  secret: '38689107c54c53651d31',
+  cluster: 'ap3',
+  useTLS: true,
+});
 
 //  middleware
 app.use(express.json());
 app.use(cors());
 
 // DB config
-const mongoURI =
-  'mongodb+srv://admin:1PIURADFkjDj6py8@cluster0.zsai0.mongodb.net/todoDB?retryWrites=true&w=majority';
 
 mongoose.connect(mongoURI, {
   useCreateIndex: true,
@@ -23,6 +31,19 @@ mongoose.connect(mongoURI, {
 
 mongoose.connection.once('open', () => {
   console.log('DB connected');
+  const changeStream = mongoose.connection.collection('todolists').watch();
+  changeStream.on('change', change => {
+    if (
+      change.operationType === 'insert' ||
+      change.operationType === 'delete'
+    ) {
+      pusher.trigger('todos', 'newTodo', {
+        change: change,
+      });
+    } else {
+      console.log('error');
+    }
+  });
 });
 
 //api routes
