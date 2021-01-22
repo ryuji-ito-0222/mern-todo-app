@@ -1,5 +1,6 @@
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import {
+  Box,
   Button,
   Flex,
   Heading,
@@ -26,9 +27,7 @@ const App: React.FC = () => {
   const [todoList, setTodoList] = useState<Todo[]>([]);
 
   const getTodos = () => {
-    axios
-      .get('/get/todoList')
-      .then((res: { data: React.SetStateAction<Todo[]> }) => setTodoList(res.data));
+    axios.get('/get/todoList').then((res: { data: Todo[] }) => setTodoList(res.data));
   };
 
   const addTodo = (e: React.SyntheticEvent) => {
@@ -50,15 +49,14 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <Stack display="grid" placeItems="center" height="100vh" p={10}>
+    <Box display="grid" placeItems="center" height="100vh" py={5}>
       <Flex
         direction="column"
         border="3px solid"
         borderColor="blue.300"
         height="100%"
-        width="60vw"
-        minWidth="350px"
-        maxWidth="700px"
+        width="95vw"
+        maxWidth="650px"
         borderRadius={10}
         p={2}
       >
@@ -109,7 +107,7 @@ const App: React.FC = () => {
           </List>
         )}
       </Flex>
-    </Stack>
+    </Box>
   );
 };
 
