@@ -1,4 +1,15 @@
-import { Box, Button, Flex, Heading, Input, ListItem, OrderedList, Stack } from '@chakra-ui/react';
+import { CheckCircleIcon } from '@chakra-ui/icons';
+import {
+  Button,
+  Flex,
+  Heading,
+  Input,
+  List,
+  ListIcon,
+  ListItem,
+  Skeleton,
+  Stack,
+} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import axios from './axios';
@@ -22,12 +33,11 @@ const App: React.FC = () => {
 
   const addTodo = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    axios
-      .post('/new/todo', {
-        todo: input,
-        timestamp: Date.now(),
-      })
-      .then(() => setInput(''));
+    axios.post('/new/todo', {
+      todo: input,
+      timestamp: Date.now(),
+    });
+    setInput('');
   };
 
   useEffect(() => {
@@ -40,13 +50,14 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <Stack display="grid" placeItems="center" height="100vh">
-      <Box
-        border="2px solid"
+    <Stack display="grid" placeItems="center" height="100vh" p={10}>
+      <Flex
+        direction="column"
+        border="3px solid"
         borderColor="blue.300"
-        height="700px"
-        width="60%"
-        minWidth="500px"
+        height="100%"
+        width="60vw"
+        minWidth="350px"
         maxWidth="700px"
         borderRadius={10}
         p={2}
@@ -59,7 +70,7 @@ const App: React.FC = () => {
           borderColor="blue.300"
           py={2}
         >
-          Todo App
+          Todo List
         </Heading>
         <Flex as="form" border="1px solid" borderColor="blue.400" borderRadius={5} my={3}>
           <Input
@@ -75,18 +86,29 @@ const App: React.FC = () => {
             borderRadius={0}
             border="none"
             onClick={addTodo}
+            color="white"
           >
             Add
           </Button>
         </Flex>
-        <OrderedList>
-          {todoList.map(({ id, todo }) => (
-            <ListItem key={id}>
-              <Todo id={id} todo={todo} />
-            </ListItem>
-          ))}
-        </OrderedList>
-      </Box>
+        {!todoList.length ? (
+          <Stack spacing={5}>
+            <Skeleton height="30px" />
+            <Skeleton height="30px" />
+            <Skeleton height="30px" />
+            <Skeleton height="30px" />
+          </Stack>
+        ) : (
+          <List overflow="auto" flex={1}>
+            {todoList.map(({ id, todo }) => (
+              <ListItem key={id} display="flex" alignItems="baseline">
+                <ListIcon as={CheckCircleIcon} color="green.500" />
+                <Todo id={id} todo={todo} />
+              </ListItem>
+            ))}
+          </List>
+        )}
+      </Flex>
     </Stack>
   );
 };
